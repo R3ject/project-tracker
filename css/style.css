@@ -229,3 +229,55 @@ form input, form select, form button {
 .delete-btn:hover {
   color: red;
 }
+
+
+/* Project Card Styles (updated) */
+.project {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: #fff; /* default background, overridden by status classes */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  color: #000; /* force text to be black */
+}
+
+/* Status-specific card backgrounds */
+.project.status-not-started {
+  background-color: #ffe5e5; /* light red */
+}
+.project.status-in-progress {
+  background-color: #fff5e5; /* light orange */
+}
+.project.status-completed {
+  background-color: #e5ffe5; /* light green */
+}
+
+/* Progress Bar Styles */
+.progress-bar-container {
+  width: 100%;
+  background: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 10px 0;
+  height: 20px;
+  position: relative;
+}
+.progress-bar {
+  height: 100%;
+  background-color: #4caf50; /* you can adjust this color */
+  width: 0%;
+}
+.progress-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  line-height: 20px;
+  font-size: 0.9em;
+  color: #000;
+}
+
+/* Other existing CSS remains unchanged */

@@ -65,8 +65,14 @@ function displayProjects() {
   // Render each project; store original index via data attributes
   filteredProjects.forEach((project, idx) => {
     const originalIndex = projects.indexOf(project);
-    const projectDiv = document.createElement('div');
-    // Add a status-specific class based on project.status (converted to lower case without spaces)
+
+    // Calculate milestone progress
+    const milestones = project.milestones || [];
+    const totalMilestones = milestones.length;
+    const completedMilestones = milestones.filter(m => m.status === 'Completed').length;
+    const progressPercent = totalMilestones ? Math.round((completedMilestones / totalMilestones) * 100) : 0;
+    
+    // Determine card background status class
     let statusClass = '';
     if (project.status === 'Not Started') {
       statusClass = 'status-not-started';
@@ -75,47 +81,53 @@ function displayProjects() {
     } else if (project.status === 'Completed') {
       statusClass = 'status-completed';
     }
+    
+    const projectDiv = document.createElement('div');
     projectDiv.className = `project ${statusClass}`;
     
-// Inside displayProjects(), replace the card markup with something like:
-projectDiv.innerHTML = `
-  <div class="card-header">
-    <strong class="editable" data-field="name" data-index="${originalIndex}">${project.name}</strong> - ${project.status}
-    <button class="delete-btn" onclick="confirmDelete(${originalIndex})">X</button>
-  </div>
-  <div class="card-body">
-    <em>Due:</em> ${project.dueDate ? project.dueDate : 'No date set'}<br>
-    <span class="editable" data-field="description" data-index="${originalIndex}">${project.description}</span>
-  </div>
-  <div class="project-controls">
-    <select onchange="updateStatus(${originalIndex}, this.value)">
-      <option value="Not Started" ${project.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
-      <option value="In Progress" ${project.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-      <option value="Completed" ${project.status === 'Completed' ? 'selected' : ''}>Completed</option>
-    </select>
-    <button class="toggle-milestones" data-index="${originalIndex}">Toggle Milestones</button>
-  </div>
-  <div class="milestones-list" id="milestones-${originalIndex}">
-    ${project.milestones && project.milestones.length
-      ? project.milestones.map((m, i) => `
-          <div class="milestone-item" data-index="${i}">
-            <span class="editable-milestone" data-project-index="${originalIndex}" data-milestone-index="${i}">${m.name}</span>
-            <select onchange="updateMilestoneStatus(${originalIndex}, ${i}, this.value)">
-              <option value="Not Started" ${m.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
-              <option value="In Progress" ${m.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-              <option value="Completed" ${m.status === 'Completed' ? 'selected' : ''}>Completed</option>
-            </select>
-            <span class="status-indicator ${m.status === 'Not Started' ? 'status-not-started' : 
-              m.status === 'In Progress' ? 'status-in-progress' : 'status-completed'}">${m.status}</span>
-          </div>
-        `).join('') 
-      : '<em>No milestones added</em>'}
-    <button class="add-milestone-card" data-project-index="${originalIndex}">Add Milestone</button>
-  </div>
-`;
-
+    projectDiv.innerHTML = `
+      <div class="card-header">
+        <strong class="editable" data-field="name" data-index="${originalIndex}">${project.name}</strong> - ${project.status}
+        <button class="delete-btn" onclick="confirmDelete(${originalIndex})">X</button>
+      </div>
+      <div class="card-body">
+        <em>Due:</em> ${project.dueDate ? project.dueDate : 'No date set'}<br>
+        <span class="editable" data-field="description" data-index="${originalIndex}">${project.description}</span>
+      </div>
+      <!-- Progress Bar -->
+      <div class="progress-bar-container">
+        <div class="progress-bar" style="width: ${progressPercent}%"></div>
+        <span class="progress-text">${progressPercent}% Complete</span>
+      </div>
+      <div class="project-controls">
+        <select onchange="updateStatus(${originalIndex}, this.value)">
+          <option value="Not Started" ${project.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+          <option value="In Progress" ${project.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+          <option value="Completed" ${project.status === 'Completed' ? 'selected' : ''}>Completed</option>
+        </select>
+        <button class="toggle-milestones" data-index="${originalIndex}">Toggle Milestones</button>
+      </div>
+      <div class="milestones-list" id="milestones-${originalIndex}">
+        ${project.milestones && project.milestones.length
+          ? project.milestones.map((m, i) => `
+              <div class="milestone-item" data-index="${i}">
+                <span class="editable-milestone" data-project-index="${originalIndex}" data-milestone-index="${i}">${m.name}</span>
+                <select onchange="updateMilestoneStatus(${originalIndex}, ${i}, this.value)">
+                  <option value="Not Started" ${m.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+                  <option value="In Progress" ${m.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                  <option value="Completed" ${m.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                </select>
+                <span class="status-indicator ${m.status === 'Not Started' ? 'status-not-started' : 
+                  m.status === 'In Progress' ? 'status-in-progress' : 'status-completed'}">${m.status}</span>
+              </div>
+            `).join('') 
+          : '<em>No milestones added</em>'}
+        <button class="add-milestone-card" data-project-index="${originalIndex}">Add Milestone</button>
+      </div>
+    `;
     projectList.appendChild(projectDiv);
     
+    // Animate card appearance
     gsap.from(projectDiv, { opacity: 0, y: 20, duration: 0.5, delay: idx * 0.1 });
   });
 }
@@ -296,20 +308,6 @@ function updateMilestoneStatus(projectIndex, milestoneIndex, status) {
 filterStatus.addEventListener('change', displayProjects);
 sortOption.addEventListener('change', displayProjects);
 searchInput.addEventListener('input', displayProjects);
-
-/* ---------------------------
-   GSAP Hover Animations
----------------------------- */
-document.addEventListener('mouseover', (e) => {
-  if (e.target.closest('.project')) {
-    gsap.to(e.target.closest('.project'), { scale: 1.02, duration: 0.2 });
-  }
-});
-document.addEventListener('mouseout', (e) => {
-  if (e.target.closest('.project')) {
-    gsap.to(e.target.closest('.project'), { scale: 1, duration: 0.2 });
-  }
-});
 
 /* ---------------------------
    Modal for Delete Confirmation
