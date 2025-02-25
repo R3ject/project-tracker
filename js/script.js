@@ -65,14 +65,14 @@ function displayProjects() {
   // Render each project; store original index via data attributes
   filteredProjects.forEach((project, idx) => {
     const originalIndex = projects.indexOf(project);
-
+    
     // Calculate milestone progress
     const milestones = project.milestones || [];
     const totalMilestones = milestones.length;
     const completedMilestones = milestones.filter(m => m.status === 'Completed').length;
     const progressPercent = totalMilestones ? Math.round((completedMilestones / totalMilestones) * 100) : 0;
     
-    // Determine card background status class
+    // Determine status class
     let statusClass = '';
     if (project.status === 'Not Started') {
       statusClass = 'status-not-started';
@@ -108,9 +108,11 @@ function displayProjects() {
         <button class="toggle-milestones" data-index="${originalIndex}">Toggle Milestones</button>
       </div>
       <div class="milestones-list" id="milestones-${originalIndex}">
-        ${project.milestones && project.milestones.length
+        ${
+          project.milestones && project.milestones.length
           ? project.milestones.map((m, i) => `
               <div class="milestone-item" data-index="${i}">
+                <span class="drag-handle">≡</span>
                 <span class="editable-milestone" data-project-index="${originalIndex}" data-milestone-index="${i}">${m.name}</span>
                 <select onchange="updateMilestoneStatus(${originalIndex}, ${i}, this.value)">
                   <option value="Not Started" ${m.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
@@ -120,8 +122,9 @@ function displayProjects() {
                 <span class="status-indicator ${m.status === 'Not Started' ? 'status-not-started' : 
                   m.status === 'In Progress' ? 'status-in-progress' : 'status-completed'}">${m.status}</span>
               </div>
-            `).join('') 
-          : '<em>No milestones added</em>'}
+            `).join('')
+          : '<em>No milestones added</em>'
+        }
         <button class="add-milestone-card" data-project-index="${originalIndex}">Add Milestone</button>
       </div>
     `;
@@ -129,6 +132,25 @@ function displayProjects() {
     
     // Animate card appearance
     gsap.from(projectDiv, { opacity: 0, y: 20, duration: 0.5, delay: idx * 0.1 });
+    
+    // Initialize Sortable on the milestones list (using the drag handle)
+    const milestonesListEl = document.getElementById(`milestones-${originalIndex}`);
+    if(milestonesListEl) {
+      Sortable.create(milestonesListEl, {
+        animation: 150,
+        handle: '.drag-handle',
+        onEnd: function (evt) {
+          // evt.oldIndex and evt.newIndex are relative to draggable items
+          let milestoneList = project.milestones;
+          if (milestoneList && milestoneList.length > 0) {
+            const movedItem = milestoneList.splice(evt.oldIndex, 1)[0];
+            milestoneList.splice(evt.newIndex, 0, movedItem);
+            localStorage.setItem('projects', JSON.stringify(projects));
+            displayProjects();
+          }
+        }
+      });
+    }
   });
 }
 

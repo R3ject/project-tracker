@@ -67,17 +67,16 @@ form input, form select, form button {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 15px;
-  /* Default background (will be overridden by status classes) */
-  background-color: #fff;
+  background-color: #fff; /* default background; overridden by status classes */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
   gap: 10px;
   position: relative;
-  color: #000;
+  color: #000; /* Force text to be black */
 }
 
-/* Status-specific card backgrounds */
+/* Status-specific card backgrounds with forced black text */
 .project.status-not-started {
   background-color: #ffe5e5; /* light red */
   color: #000;
@@ -91,6 +90,51 @@ form input, form select, form button {
   color: #000;
 }
 
+/* Card Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Delete Button */
+.delete-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.2em;
+  color: #333;
+  cursor: pointer;
+  padding: 0;
+}
+.delete-btn:hover {
+  color: red;
+}
+
+/* Progress Bar Styles */
+.progress-bar-container {
+  width: 100%;
+  background: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 10px 0;
+  height: 20px;
+  position: relative;
+}
+.progress-bar {
+  height: 100%;
+  background-color: #4caf50;
+  width: 0%;
+}
+.progress-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  line-height: 20px;
+  font-size: 0.9em;
+  color: #000;
+}
+
+/* Project Controls */
 .project-controls {
   display: flex;
   align-items: center;
@@ -101,7 +145,7 @@ form input, form select, form button {
 .milestones-list {
   border-top: 1px solid #ddd;
   padding-top: 10px;
-  display: none; /* Hidden by default; toggled via button */
+  display: none; /* hidden by default; toggled via button */
 }
 .milestone-item {
   display: flex;
@@ -113,7 +157,33 @@ form input, form select, form button {
   flex: 1;
 }
 
-/* Editable milestone text styling (underline on hover, etc.) */
+/* Drag Handle for Milestones */
+.drag-handle {
+  cursor: grab;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  max-width: 20px;
+  min-height: 20px;
+  max-height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+  font-size: 0.8em;
+  color: #555;
+  background: #eee;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+
+/* Editable Milestone Text */
 .editable-milestone {
   cursor: pointer;
   border-bottom: 1px dashed transparent;
@@ -122,7 +192,7 @@ form input, form select, form button {
   border-bottom: 1px dashed #888;
 }
 
-/* Status Indicator Colors */
+/* Status Indicator Colors for Milestones */
 .status-not-started {
   color: #fff;
   background-color: red;
@@ -200,84 +270,3 @@ form input, form select, form button {
     padding: 0 10px;
   }
 }
-
-
-/* Ensure the project card container is relative */
-.project {
-  position: relative;
-  color: #000; /* ensure text is black */
-}
-
-/* Header styling for the card */
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Delete button styling */
-.delete-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.2em;
-  color: #333;
-  cursor: pointer;
-  padding: 0;
-}
-
-/* Optionally add a hover effect */
-.delete-btn:hover {
-  color: red;
-}
-
-
-/* Project Card Styles (updated) */
-.project {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 15px;
-  background-color: #fff; /* default background, overridden by status classes */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  position: relative;
-  color: #000; /* force text to be black */
-}
-
-/* Status-specific card backgrounds */
-.project.status-not-started {
-  background-color: #ffe5e5; /* light red */
-}
-.project.status-in-progress {
-  background-color: #fff5e5; /* light orange */
-}
-.project.status-completed {
-  background-color: #e5ffe5; /* light green */
-}
-
-/* Progress Bar Styles */
-.progress-bar-container {
-  width: 100%;
-  background: #ddd;
-  border-radius: 4px;
-  overflow: hidden;
-  margin: 10px 0;
-  height: 20px;
-  position: relative;
-}
-.progress-bar {
-  height: 100%;
-  background-color: #4caf50; /* you can adjust this color */
-  width: 0%;
-}
-.progress-text {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  line-height: 20px;
-  font-size: 0.9em;
-  color: #000;
-}
-
-/* Other existing CSS remains unchanged */
