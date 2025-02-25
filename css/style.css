@@ -1,0 +1,231 @@
+/* General Styles */
+body {
+  font-family: sans-serif;
+  margin: 20px;
+  background-color: #f2f2f2;
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+}
+
+/* Form Styles */
+form {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 600px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+form input, form select, form button {
+  padding: 8px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Milestones in Form */
+#milestonesContainer .milestone-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+#milestonesContainer .milestone-row input {
+  flex: 1;
+}
+#milestonesContainer .milestone-row select {
+  width: 150px;
+}
+
+/* Controls */
+#controls {
+  display: flex;
+  gap: 10px;
+  margin: 20px auto;
+  max-width: 600px;
+  justify-content: center;
+}
+
+/* Project List - Responsive Grid */
+#projectList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Project Card Styles */
+.project {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  /* Default background (will be overridden by status classes) */
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  color: #000;
+}
+
+/* Status-specific card backgrounds */
+.project.status-not-started {
+  background-color: #ffe5e5; /* light red */
+  color: #000;
+}
+.project.status-in-progress {
+  background-color: #fff5e5; /* light orange */
+  color: #000;
+}
+.project.status-completed {
+  background-color: #e5ffe5; /* light green */
+  color: #000;
+}
+
+.project-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Milestones on Card */
+.milestones-list {
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  display: none; /* Hidden by default; toggled via button */
+}
+.milestone-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+.milestone-item span {
+  flex: 1;
+}
+
+/* Editable milestone text styling (underline on hover, etc.) */
+.editable-milestone {
+  cursor: pointer;
+  border-bottom: 1px dashed transparent;
+}
+.editable-milestone:hover {
+  border-bottom: 1px dashed #888;
+}
+
+/* Status Indicator Colors */
+.status-not-started {
+  color: #fff;
+  background-color: red;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.status-in-progress {
+  color: #fff;
+  background-color: orange;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.status-completed {
+  color: #fff;
+  background-color: green;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Toggle Button for Milestones */
+.toggle-milestones {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  text-decoration: underline;
+}
+
+/* New Milestone Row in Card */
+.new-milestone {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+.new-milestone input {
+  flex: 1;
+}
+.new-milestone select {
+  width: 150px;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal.hidden {
+  display: none;
+}
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+.modal-content button {
+  margin: 10px;
+  padding: 8px 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  form, #controls {
+    width: 100%;
+    padding: 0 10px;
+  }
+}
+
+
+/* Ensure the project card container is relative */
+.project {
+  position: relative;
+  color: #000; /* ensure text is black */
+}
+
+/* Header styling for the card */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Delete button styling */
+.delete-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.2em;
+  color: #333;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Optionally add a hover effect */
+.delete-btn:hover {
+  color: red;
+}

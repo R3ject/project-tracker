@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Project Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- GSAP from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+  <h1>Project Tracker</h1>
+  
+  <!-- Project entry form -->
+  <form id="projectForm">
+    <input type="text" id="projectName" placeholder="Project Name" required>
+    <input type="date" id="projectDueDate" placeholder="Due Date">
+    <input type="text" id="projectDescription" placeholder="Description">
+    <select id="projectStatus">
+      <option value="Not Started">Not Started</option>
+      <option value="In Progress">In Progress</option>
+      <option value="Completed">Completed</option>
+    </select>
+    
+    <!-- Milestones Section in Form -->
+    <h3>Milestones</h3>
+    <div id="milestonesContainer"></div>
+    <button type="button" id="addMilestoneBtn">Add Milestone</button>
+    
+    <button type="submit">Add Project</button>
+  </form>
+  
+  <!-- Filtering & Sorting Controls -->
+  <div id="controls">
+    <select id="filterStatus">
+      <option value="all">All Statuses</option>
+      <option value="Not Started">Not Started</option>
+      <option value="In Progress">In Progress</option>
+      <option value="Completed">Completed</option>
+    </select>
+    <select id="sortOption">
+      <option value="none">No Sorting</option>
+      <option value="name">Sort by Name</option>
+      <option value="dueDate">Sort by Due Date</option>
+    </select>
+    <input type="text" id="searchInput" placeholder="Search projects...">
+  </div>
+  
+  <!-- Project display area -->
+  <div id="projectList"></div>
+  
+  <!-- Modal for Delete Confirmation -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <p>Are you sure you want to delete this project?</p>
+      <button id="confirmDeleteBtn">Yes, delete</button>
+      <button id="cancelDeleteBtn">Cancel</button>
+    </div>
+  </div>
+  
+  <!-- External JavaScript -->
+  <script src="js/script.js"></script>
+</body>
+</html>
